@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crystal Ball Reader</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="oracle-shell">
+      <canvas id="aura" aria-hidden="true"></canvas>
+
+      <section class="reader-stage" aria-label="Crystal ball fortune reader">
+        <div class="reader-copy">
+          <p class="kicker" data-i18n="hero.kicker">Fortune Teller</p>
+          <h1>Crystal Ball Reader</h1>
+          <p class="subtitle" data-i18n="hero.subtitle">เลือกราศี ปีเกิด และเปิดไพ่ทาโร่ ให้ลูกแก้วประกอบคำทำนายจากข้อมูลพื้นฐานจริงของจักรราศีและนักษัตรจีน</p>
+        </div>
+
+        <div class="altar">
+          <div class="zodiac-ring" aria-hidden="true">
+            <span>♈</span><span>♉</span><span>♊</span><span>♋</span><span>♌</span><span>♍</span>
+            <span>♎</span><span>♏</span><span>♐</span><span>♑</span><span>♒</span><span>♓</span>
+          </div>
+          <button class="crystal-button" id="crystalButton" type="button" aria-label="อ่านคำทำนายจากลูกแก้ว">
+            <span class="crystal">
+              <span class="crystal-core"></span>
+              <span class="crystal-mist"></span>
+              <span class="crystal-vision" id="crystalVision">♒</span>
+              <span class="crystal-glint"></span>
+            </span>
+          </button>
+          <div class="stand" aria-hidden="true">
+            <span></span>
+          </div>
+        </div>
+
+        <aside class="control-panel">
+          <div class="language-switcher" role="group" aria-label="Language">
+            <button class="language-button active" type="button" data-lang="th">ไทย</button>
+            <button class="language-button" type="button" data-lang="en">EN</button>
+            <button class="language-button" type="button" data-lang="zh">中文</button>
+          </div>
+
+          <div class="mode-tabs" role="tablist" aria-label="ประเภทคำทำนาย">
+            <button class="mode-tab active" type="button" data-mode="overview">ภาพรวม</button>
+            <button class="mode-tab" type="button" data-mode="love">ความรัก</button>
+            <button class="mode-tab" type="button" data-mode="career">งาน</button>
+            <button class="mode-tab" type="button" data-mode="money">เงิน</button>
+          </div>
+
+          <div class="birth-grid">
+            <label>
+              <span data-i18n="inputs.birthDate">วันเกิด</span>
+              <input id="birthDate" type="date" value="1996-08-18" />
+            </label>
+            <label>
+              <span data-i18n="inputs.zodiac">ราศี</span>
+              <select id="zodiacSelect"></select>
+            </label>
+            <label>
+              <span data-i18n="inputs.birthYear">ปีเกิด</span>
+              <input id="birthYear" type="number" min="1900" max="2099" value="1996" />
+            </label>
+          </div>
+
+          <div class="fact-strip" aria-live="polite">
+            <div>
+              <span>ราศี</span>
+              <strong id="zodiacFact">-</strong>
+            </div>
+            <div>
+              <span>ธาตุ</span>
+              <strong id="elementFact">-</strong>
+            </div>
+            <div>
+              <span>นักษัตรจีน</span>
+              <strong id="chineseFact">-</strong>
+            </div>
+          </div>
+
+          <section class="tarot-table" aria-label="เปิดไพ่ทาโร่สามใบ">
+            <div class="section-head">
+              <p class="card-label">Tarot Spread</p>
+              <button class="ghost-action compact" id="shuffleButton" type="button" data-i18n="actions.shuffle">สับไพ่</button>
+            </div>
+            <div class="tarot-spread" id="tarotSpread"></div>
+          </section>
+        </aside>
+
+        <section class="reading-panel" aria-live="polite">
+          <div class="fortune-card" id="fortuneCard">
+            <p class="card-label" id="cardLabel">The Veil Opens</p>
+            <h2 id="fortuneTitle" data-i18n="fortune.initialTitle">ลูกแก้วรอข้อมูลของคุณ</h2>
+            <p id="fortuneText" data-i18n="fortune.initialText">เลือกวันเกิด ปีเกิด หรือกดเปิดไพ่ แล้วรับคำทำนายที่รวมราศี นักษัตรจีน และทาโร่เข้าด้วยกัน</p>
+          </div>
+
+          <div class="detail-grid" id="detailGrid"></div>
+
+          <div class="mini-oracle-grid" id="miniOracleGrid"></div>
+
+          <div class="reader-actions">
+            <button class="primary-action" id="readButton" type="button" data-i18n="actions.read">ทำนายจากลูกแก้ว</button>
+            <button class="ghost-action" id="saveButton" type="button" data-i18n="actions.save">เก็บคำทำนาย</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="commerce-grid" aria-label="พื้นที่เครื่องมือดูดวงและผู้สนับสนุน">
+        <div class="partition-head">
+          <p class="kicker" data-i18n="tools.kicker">Oracle Tools</p>
+          <h2 data-i18n="tools.title">เครื่องมือดูดวงเสริม</h2>
+          <p data-i18n="tools.subtitle">อ่านพลังวันนี้แบบละเอียดขึ้นจากราศี ปีเกิด ไพ่ทาโร่ และจังหวะประจำวัน</p>
+        </div>
+        <div class="oracle-tools" id="oracleTools"></div>
+
+        <section class="oracle-games" aria-label="Oracle games">
+          <div class="games-head">
+            <p class="kicker" data-i18n="games.kicker">Oracle Games</p>
+            <h2 data-i18n="games.title">เกมคำทำนาย</h2>
+          </div>
+          <div class="game-grid" id="oracleGames"></div>
+        </section>
+
+        <div class="partition-head sponsor-head">
+          <p class="kicker" data-i18n="sponsors.kicker">Sponsors</p>
+          <h2 data-i18n="sponsors.title">พื้นที่ผู้สนับสนุน</h2>
+          <p data-i18n="sponsors.subtitle">รวมลิงก์แนะนำแบบเป็นหมวดหมู่ ไม่รบกวนการอ่านคำทำนาย</p>
+        </div>
+        <aside class="ad-board" id="adBoard"></aside>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
